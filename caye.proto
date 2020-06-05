@@ -1,0 +1,65 @@
+syntax = "proto3";
+package caye;
+option go_package = "github.com/richcontext/caye";
+
+enum Status {
+  RUNNING = 0;
+  DONE    = 1;
+  FAILED  = 2;
+}
+
+message BuildStep {
+  Status status = 1;
+}
+
+message Build {
+  Status status = 1;
+  map<string,BuildStep> steps = 2;
+}
+
+message StartBuildRequest {
+}
+
+message StartBuildResponse {
+  string id = 1;
+}
+
+message EndBuildRequest {
+  string id = 1;
+  bool error = 2;
+}
+
+message EndBuildResponse {
+}
+
+message StartRunRequest {
+  string build_id = 1;
+}
+
+message StartRunResponse {
+  string id = 1;
+}
+
+message EndRunRequest {
+  string build_id = 1;
+  string run_id = 2;
+  bool error = 3;
+}
+
+message EndRunResponse {
+}
+
+message ListBuildsRequest {
+}
+
+message ListBuildsResponse {
+  repeated Build builds = 1;
+}
+
+service Builds {
+  rpc StartBuild(StartBuildRequest) returns (StartBuildResponse);
+  rpc EndBuild(EndBuildRequest)     returns (EndBuildResponse);
+  rpc StartRun(StartRunRequest)     returns (StartRunResponse);
+  rpc EndRun(EndRunRequest)         returns (EndRunResponse);
+  rpc List(ListBuildsRequest)       returns (ListBuildsResponse);
+}

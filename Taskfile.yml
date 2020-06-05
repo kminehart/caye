@@ -1,0 +1,23 @@
+# https://taskfile.dev
+
+version: '2'
+
+tasks:
+  proto:
+    cmds:
+      - |
+        protoc \
+          --proto_path=. \
+          --go_out=plugins=grpc:. \
+          --go_opt=module=github.com/kminehart/caye \
+          ./caye.proto
+  build:
+    cmds:
+      - task: proto
+      - cmd: go build -o ./bin/caye ./cmd/caye
+      - cmd: go build -o ./bin/server ./cmd/server
+  example:
+    cmds:
+      - task: proto
+      - task: build
+      - cmd: caye ./examples/01-basic-project
