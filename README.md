@@ -75,8 +75,8 @@ package main
 import "github.com/kminehart/caye"
 
 func main() {
-	client := caye.Default()
-	defer client.Done()
+  client := caye.Default()
+  defer client.Done()
 
   golang := client.Languages().Go()
 
